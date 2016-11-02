@@ -111,13 +111,13 @@ _bridge = function() {
       _native.finalizeRequest(wallet.id, requestId);
     },
 
-    createSpendRequest: function(wallet, toAddress, amountSatoshi, options) {
+    createSpendRequest: function(wallet, toAddress, amountSatoshi, amountFiat, options) {
       var cbid = newId(), opts = options;
       Airbitz._callbacks[cbid] = function(data) {
         _handleResponse(data, opts);
         delete Airbitz._callbacks[cbid];
       };
-      _native.createSpendRequest(cbid, wallet.id, toAddress, amountSatoshi, amountFiat,
+      _native.requestSpend(cbid, wallet.id, toAddress, amountSatoshi, amountFiat,
         options.label || '', options.category || '', options.notes || '', options.bizId);
     },
 
@@ -127,7 +127,7 @@ _bridge = function() {
         _handleResponse(data, opts);
         delete Airbitz._callbacks[cbid];
       };
-      _native.createSpendRequest2(cbid, wallet.id, toAddress, amountSatoshi, toAddress2, amountSatoshi2, amountFiat,
+      _native.requestSpend2(cbid, wallet.id, toAddress, amountSatoshi, toAddress2, amountSatoshi2, amountFiat,
           options.label || '', options.category || '', options.notes || '', options.bizId);
     },
 
@@ -491,7 +491,7 @@ _bridge = function() {
    * @param {function} callback - a function that will be called when the user
    * changes their currently selected wallet.
    */
-  Airbitz.core.setWalletChangeListener = function(callback) {
+  Airbitz.core.setupWalletChangeListener = function(callback) {
     Airbitz._walletListener = callback;
   };
 
@@ -702,7 +702,7 @@ $(function() {
     height: 128,
   });
   // If the user changes the wallet, we want to know about it
-  Airbitz.core.setWalletChangeListener(function(wallet) {
+  Airbitz.core.setupWalletChangeListener(function(wallet) {
     Airbitz.ui.showAlert("Wallet Changed", "Wallet Changed to " + wallet.name + ".");
     updateUi(wallet);
   });

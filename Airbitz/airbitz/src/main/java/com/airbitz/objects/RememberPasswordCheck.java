@@ -31,7 +31,6 @@
 
 package com.airbitz.objects;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -80,7 +79,7 @@ public class RememberPasswordCheck {
         input.setTransformationMethod(new PasswordTransformationMethod());
         input.setImeOptions(EditorInfo.IME_ACTION_GO);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(mActivity);
         builder.setTitle(mActivity.getString(R.string.password_check_remember_title))
                 .setView(view)
                 .setCancelable(false)
